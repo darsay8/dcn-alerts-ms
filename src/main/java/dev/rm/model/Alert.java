@@ -1,10 +1,13 @@
 package dev.rm.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,11 +26,8 @@ public class Alert {
     @Column(name = "id")
     private Long alertId;
 
-    @Column(name = "patient_id")
-    private Long patientId;
-
-    @Column(name = "vital_sign_id")
-    private Long vitalSignId;
+    @Column(name = "patient_name")
+    private String patient;
 
     @Column(name = "alert_type")
     private AlertType type;
@@ -39,6 +39,11 @@ public class Alert {
     private String description;
 
     @Column(name = "timestamp")
-    private Long timestamp;
+    private LocalDateTime timestamp;
+
+    @PrePersist
+    protected void onCreate() {
+        timestamp = LocalDateTime.now();
+    }
 
 }
