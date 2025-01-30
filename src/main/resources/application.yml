@@ -15,6 +15,11 @@ spring:
         dialect: org.hibernate.dialect.OracleDialect
     hibernate:
       ddl-auto: create-drop
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
 server:
   port: ${PORT}
 logging:
@@ -23,3 +28,6 @@ logging:
     org:
       hibernate: DEBUG
       springframework: DEBUG
+service:
+  patient:
+    url: ${PATIENT_SERVICE_URL}
