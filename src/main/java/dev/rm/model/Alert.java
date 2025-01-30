@@ -1,18 +1,9 @@
 package dev.rm.model;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
+import lombok.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -21,29 +12,31 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "alerts")
 public class Alert {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long alertId;
 
-    @Column(name = "patient_name")
+    @Column(name = "patient_name", nullable = false)
     private String patient;
 
-    @Column(name = "alert_type")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "alert_type", nullable = false)
     private AlertType type;
 
-    @Column(name = "alert_level")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "alert_level", nullable = false)
     private AlertLevel level;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false, length = 500)
     private String description;
 
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 
     @PrePersist
     protected void onCreate() {
         timestamp = LocalDateTime.now();
     }
-
 }
