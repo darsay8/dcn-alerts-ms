@@ -2,11 +2,12 @@ package dev.rm.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import dev.rm.model.Alert;
-import dev.rm.model.VitalSignsMessage;
+import dev.rm.model.AlertMessage;
 
 @Slf4j
 @Service
@@ -15,11 +16,18 @@ public class AlertConsumer {
 
     private final AlertService alertService;
 
-    @RabbitListener(queues = "alertQueue")
-    public void receiveVitalSigns(VitalSignsMessage message) {
-        log.info("Received vital signs for Patient ID: {}", message.getPatientId());
+    @KafkaListener(topics = "alerts", groupId = "alertsGroup")
+    public void listen(AlertMessage message) {
+        log.info("Received alert for Patient: {}", message.getPatientName());
+        log.info("Alert: {}", message);
 
-        Alert alert = alertService.generateAlertFromVitalSigns(message);
-        log.info("Generated Alert: {}", alert);
+        Alert alert = Alert.builder()
+                .patient(message.getPatientName())
+                .type(message.getType())
+                .level(message.getLevel())
+                .description(message.getDescription())
+                .build();
+
+        alertService.createAlert(alert);
     }
 }
