@@ -182,7 +182,6 @@ public class AlertServiceImpl implements AlertService {
                 .description(description)
                 .build();
 
-        alert = alertRepository.save(alert);
         sendPatientStatusUpdate(patient, alertLevel);
         return alert;
     }

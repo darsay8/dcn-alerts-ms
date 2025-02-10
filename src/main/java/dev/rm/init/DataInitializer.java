@@ -28,11 +28,13 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         log.info("Initializing data...");
 
-        Alert alert1 = AlertFactory.createAlert("Juan Pérez", AlertType.WARNING, AlertLevel.LOW,
-                "Slightly elevated blood pressure");
+        Alert alert1 = AlertFactory.createAlert("Ethan Carter", AlertType.WARNING,
+                AlertLevel.MEDIUM,
+                "Elevated blood pressure: 130/80. This is a moderate concern.");
 
-        Alert alert2 = AlertFactory.createAlert("María López", AlertType.CRITICAL, AlertLevel.HIGH,
-                "Irregular heartbeat");
+        Alert alert2 = AlertFactory.createAlert("Lila Bennett", AlertType.CRITICAL,
+                AlertLevel.HIGH,
+                "Moderate heart rate detected: 132 bpm. This is a critical concern.");
 
         alertRepository.saveAll(Arrays.asList(alert1, alert2));
 
