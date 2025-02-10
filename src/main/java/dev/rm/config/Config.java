@@ -21,19 +21,34 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.web.client.RestTemplate;
 
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+
 import dev.rm.model.AlertMessage;
 import dev.rm.model.VitalSignsMessage;
 
 @Configuration
 public class Config {
 
+    @Value("${KAFKA_BOOTSTRAP_SERVERS}")
+    private String bootstrapServers;
+
     @Bean
     RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
-    @Value("${KAFKA_BOOTSTRAP_SERVERS}")
-    private String bootstrapServers;
+    // ==> RabbitMQ configuration <==
+
+    @Bean
+    public Queue patientStatusQueue() {
+        return new Queue("patientStatusQueue", true);
+    }
+
+    @Bean
+    public Jackson2JsonMessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
 
     // ==> VitalSignsConsumer Kafka configuration <==
 
